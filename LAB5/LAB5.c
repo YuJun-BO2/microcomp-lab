@@ -6,7 +6,9 @@
 #define SW P0
 #define SEG P1 // 定義七段顯示器接至 Port 1
 
-void delay1ms(int);       // 宣告延遲函數
+void delay1ms(int);       // 宣告延遲函數（主程式用）
+void int0_delay1ms(int);  // 宣告 INT0 專用延遲函數
+void int1_delay1ms(int);  // 宣告 INT1 專用延遲函數
 void updatepriority();    // 宣告更新中斷優先權函數
 int num = 0;              // 宣告整數變數 num，初值 = 0
 
@@ -41,7 +43,7 @@ main() // 主程式開始
 void my_int0(void) interrupt 0 // INT0 中斷副程式開始
 {
 	// unsigned saveLED = LED; // 儲存中斷前 LED 狀態
-	delay1ms(3000);             // 休息3秒
+	int0_delay1ms(3000);        // 休息3秒
 	// LED = saveLED;          // 寫回中斷前 LED 狀態
 } // 結束 INT0 中斷副程式
 
@@ -49,7 +51,7 @@ void my_int0(void) interrupt 0 // INT0 中斷副程式開始
 void my_int1(void) interrupt 2 // INT1 中斷副程式開始
 {
 	// unsigned saveLED = LED; // 儲存中斷前 LED 狀態
-	delay1ms(500);             // 消除彈跳
+	int1_delay1ms(500);        // 消除彈跳
 	num = 0;                   // 數字歸零
 	// LED = saveLED;          // 寫回中斷前 LED 狀態
 } // 結束 INT1 中斷副程式
@@ -63,6 +65,28 @@ void delay1ms(int x) // 延遲函數開始
 		for (j = 0; j < 120; j++)
 			; // 計數 120 次，延遲 1 ms
 } // 延遲函數結束
+
+/* INT0 專用延遲函數，延遲約 x * 1 ms
+   C51 的區域變數放在固定記憶體，主程式與中斷共用同一個函數會互相覆蓋，
+   且 INT0、INT1 可能巢狀中斷，所以兩個中斷各用一個 */
+void int0_delay1ms(int x)
+{
+	int i, j;
+
+	for (i = 0; i < x; i++)
+		for (j = 0; j < 120; j++)
+			;
+}
+
+/* INT1 專用延遲函數，延遲約 x * 1 ms */
+void int1_delay1ms(int x)
+{
+	int i, j;
+
+	for (i = 0; i < x; i++)
+		for (j = 0; j < 120; j++)
+			;
+}
 
 void updatepriority()
 {
