@@ -1,0 +1,24 @@
+# Keil uVision build output
+**/Objects/
+**/Listings/
+*.axf
+*.hex
+*.map
+*.obj
+*.d
+*.dep
+*.lnp
+*.lst
+*.m51
+*.crf
+*.htm
+
+# Keil uVision user-specific settings
+*.uvopt
+*.uvgui.*
+
+# Editor and temporary files
+*.bak
+*.tmp
+*.swp
+*.swo
