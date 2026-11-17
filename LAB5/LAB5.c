@@ -32,7 +32,7 @@ main() // 主程式開始
 	{
 		updatepriority();     // 更新中斷優先權
 		SEG = TAB[num];       // 顯示數字
-		delay(500);
+		delay1ms(500);
 		num = (num + 1) % 10; // 數字加 1，超過 10 則歸 0
 	} // while 迴圈結束
 } // 主程式結束
